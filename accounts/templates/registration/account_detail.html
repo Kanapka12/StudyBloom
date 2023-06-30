@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'account_detail.css' %}">
+{% endblock %}
+{% block title %} {{ user.username }}'s account {% endblock %}
+{% block content %}
+
+    <div class="row">
+
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h3>User Info</h3>
+          </div>
+          <div class="card-body">
+            <p>Email: {{ user.email }}</p>
+            <p>Username: {{ user.username }}</p>
+            <p>Password: ****** <a href="{% url 'password_change' %}">Change password</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h3>Site Appearance</h3>
+          </div>
+          <div class="card-body">
+            <form method="post" enctype="multipart/form-data" id="appearance-form">
+              {% csrf_token %}
+              {{ form.as_p }}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h3>Profile Image</h3>
+          </div>
+          <div class="card-body">
+
+
+
+
+<div class="col-4 text-center images-container">
+  <div class="avatar-container  position-relative">
+    <img src="{{ user.avatar.url }}" class="img-thumbnail" id="avatar" alt="Avatar">
+    <img src="{% static 'upload_avatar_icon.png' %}" class="position-absolute top-0 end-0 w-25 avatar-icon" alt="Avatar icon">
+    <label for="id_avatar" class="overlay position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
+      <span class="text">
+        Change avatar
+      </span>
+    </label>
+  </div>
+</div>
+
+              <div class="col-4 text-center">
+ <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    {% for avatar in default_avatars %}
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+    {% endfor %}
+  </div>
+  <div class="carousel-inner">
+    {% for avatar in default_avatars %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ MEDIA_URL }}{{ default_avatars_path }}/{{ avatar }}" class="img-thumbnail d-block w-100 select-default-avatar"  alt="Default avatars" data-avatar-name="{{ avatar }}">
+      </div>
+    {% endfor %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div></div>
+
+
+              <div class="col-4 text-center">
+                <img src="{% static 'random_avatar_chest.png' %}" class="img-thumbnail random-default-avatar" alt="random avatar - chest" >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'jquery-3.6.4.js' %}"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+<script src="{% static 'account_detail.js' %}"></script>
+{% endblock %}

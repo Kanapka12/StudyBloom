@@ -1,0 +1,9 @@
+{% extends "registration/_form_base.html" %}
+
+{% block form_header %}
+  <h2>Login</h2>
+
+<a href="{% url 'password_reset' %}">Reset password</a>
+<a href="{% url 'signup' %}">Sign up</a>
+
+{% endblock %}

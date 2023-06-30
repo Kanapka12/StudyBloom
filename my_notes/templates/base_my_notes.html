@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<button type="button" class="btn btn-primary"><i class="bi bi-plus-square"></i></button>
+<button type="button" class="btn btn-primary"><i class="bi bi-pencil-square"></i></button>
+<button type="button" class="btn btn-primary"><i class="bi bi-trash"></i></button>
+<button type="button" class="btn btn-primary"><i class="bi bi-arrows-move"></i></button>
+
+{% load mptt_tags %}
+<ul>
+    {% recursetree sections %}
+        <li>
+            {{ node.name }}
+            <ul class="children">
+            {% if not node.is_leaf_node %}
+
+                    {{ children  }}
+
+            {% elif not node.notes.is_leaf_node %}
+            {% for note in node.notes.all %}
+                <li>
+            {{note.title}}
+                    </li>
+            {% endfor %}
+            {% endif %}
+                </ul>
+
+        </li>
+    {% endrecursetree %}
+</ul>
+
+
+{{ sql_queries }}
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+  opacity: 0; /* Initially, the overlay is fully transparent */
+  transition: .3s; /* Animation to fade in the overlay */
+  color: white; /* Text color */
+}
+
+/* When you hover over the image container */
+.avatar-container:hover .overlay {
+  opacity: 1; /* Show the overlay */
+}
+.hidden-fields {
+  display: none;
+}
+.avatar-icon {
+  z-index: 10;
+}
+

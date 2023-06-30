@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'account_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>Profil użytkownika</h1>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Email: {{ object.email }}
+            <button class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'email_change' %}'">Change email</button>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Nick: {{ object.username }}
+            <button class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'username_change' %}'">Change username</button>
+          </li>
+          <li class="list-group-item">
+            <button class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'password_change' %}'">Change password</button>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+
+
+        <form method="post" enctype="multipart/form-data" id="form">
+          {% csrf_token %}
+
+
+
+          {{ form.as_p }}
+                     <div class="profile-image-container mb-3">
+      <span class="profile-image-text">Profile image: </span>
+      <label for="id_profile_image" class="profile-image-wrapper">
+        <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="profile-image" id="profileImage" />
+        <img src="{% static 'upload_profile_image_icon.png' %}" alt="Upload icon" class="upload-icon">
+        <span class="profile-image-overlay">Change avatar</span>
+      </label>
+    </div>
+          {% for image in default_images %}
+    <img src="{{ MEDIA_URL }}{{ default_images_path }}/{{ image }}" onclick="setDefaultImage('{{ image }}');">
+{% endfor %}
+          <button type="submit" name="random_image" value="true">Wylosuj zdjęcie</button>
+          <button type="submit" id="submitButton" style="display:none;">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'jquery-3.6.4.js' %}"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+<script src="{% static 'account_detail.js' %}"></script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'account_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>Profil użytkownika</h1>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Email: {{ object.email }}
+            <button class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'email_change' %}'">Change email</button>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Nick: {{ object.username }}
+            <button class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'username_change' %}'">Change username</button>
+          </li>
+          <li class="list-group-item">
+            <button class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'password_change' %}'">Change password</button>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+
+
+        <form method="post" enctype="multipart/form-data" id="form">
+          {% csrf_token %}
+
+
+
+          {{ form.as_p }}
+                     <div class="profile-image-container mb-3">
+      <span class="profile-image-text">Profile image: </span>
+      <label for="id_profile_image" class="profile-image-wrapper">
+        <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="profile-image" id="profileImage" />
+        <img src="{% static 'upload_profile_image_icon.png' %}" alt="Upload icon" class="upload-icon">
+        <span class="profile-image-overlay">Change avatar</span>
+
+      </label>
+    </div>
+          {% for image in default_images %}
+    <img src="{{ MEDIA_URL }}{{ default_images_path }}/{{ image }}" onclick="setDefaultImage('{{ image }}');">
+{% endfor %}
+          <button type="submit" name="random_image" value="true">Wylosuj zdjęcie</button>
+          <button type="submit" id="submitButton" style="display:none;">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'jquery-3.6.4.js' %}"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+<script src="{% static 'account_detail.js' %}"></script>
+{% endblock %}
+
+
+.profile-image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-image-text {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.profile-image-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.profile-image, .upload-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.upload-icon {
+  position: absolute;
+  top: 0px;
+  right: -1.5px;
+  width: 40px;
+  height: 40px;
+}
+
+.profile-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.profile-image-wrapper:hover .profile-image-overlay {
+  opacity: 1;
+}
+

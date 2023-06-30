@@ -1,0 +1,5 @@
+{% for widget in widget.subwidgets %}
+    <label>
+        <img src="{{ widget.value.url }}" alt="{{ widget.label }}" onclick="selectImage('{{ widget.value.name }}')" />
+    </label>
+{% endfor %}

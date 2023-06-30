@@ -1,0 +1,62 @@
+version: '3.9'
+
+services:
+  db-studybloom:
+    container_name: db-studybloom
+    image: postgres:15.2
+    volumes:
+      - studybloom_postgres_data:/var/lib/postgresql/data/
+    env_file: config/.env
+    depends_on:
+      - db-ksite
+
+  studybloom:
+    container_name: web-studybloom
+    build: .
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    env_file: config/.env
+    volumes:
+      - .:/usr/src/StudyBloom
+    depends_on:
+      - db-studybloom
+
+  ksite:
+    container_name: web-ksite
+    build: P:/projekty/Ksite
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:2000"
+    ports:
+      - "2000:2000"
+    env_file: P:/projekty/Ksite/Ksite/.env
+    volumes:
+      - P:/projekty/Ksite:/usr/src/Ksite
+    depends_on:
+      - db-ksite
+
+  db-ksite:
+    container_name: db-ksite
+    image: postgres:15.2
+    volumes:
+      - ksite_postgres_data:/var/lib/postgresql/data/
+    env_file: P:/projekty/Ksite/Ksite/.env
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:7.0
+    ports:
+      - "80:80"
+    env_file: config/.env
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db-studybloom
+      - db-ksite
+volumes:
+  ksite_postgres_data:
+  studybloom_postgres_data:
+  pgadmin_data:
